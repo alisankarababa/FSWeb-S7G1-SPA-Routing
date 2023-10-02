@@ -5,8 +5,7 @@ import KaydedilenlerListesi from './Filmler/KaydedilenlerListesi';
 
 import {BrowserRouter as Router} from "react-router-dom"
 import {Route} from "react-router-dom"
-import FilmListesi from './Filmler/FilmListesi';
-import Film from "./Filmler/Film"
+import FilmCard from './Filmler/FilmCard';
 
 export default function App () {
     const [saved, setSaved] = useState([]); // Stretch: the ids of "saved" movies
@@ -36,10 +35,22 @@ export default function App () {
         <div>
             <Router>
                 <Route exact path="/">
-                    <FilmListesi movies={movieList}/>
+                    <div className="movie-list">
+                        {
+                            movieList.map((movie) =>
+                            {
+                                const props = {
+                                    movie: movie,
+                                    flag: "list-item"
+                                };
+                                return <FilmCard key={movie.id} props={props}/>
+                            })
+                        }
+                        {/* <FilmListesi movies={movieList}/> */}
+                    </div>
                 </Route>
                 <Route exact path="/filmler/:id">
-                    <Film/>
+                    <FilmCard props={{flag:"detail"}}/>
                 </Route>
                     <KaydedilenlerListesi list={[ /* Burası esnek */]} />
                 {/* <div>Bu Div'i kendi Routelarınızla değiştirin</div> */}
