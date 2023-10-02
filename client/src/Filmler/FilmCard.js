@@ -9,7 +9,8 @@ export default function FilmCard (props) {
     const history = useHistory();
     const [movie, setMovie] = useState(null);
     
-    function hClick(id)
+
+    function hMovieDetails(id)
     {
         history.push(`/filmler/${id}`);
     }
@@ -30,7 +31,7 @@ export default function FilmCard (props) {
     {
         const { title, director, metascore} = props.props.movie;
         return (
-            <div className="movie-card" onClick={() => hClick(props.props.movie.id)}>
+            <div className="movie-card" onClick={() => hMovieDetails(props.props.movie.id)}>
                 <h2>{title}</h2>
                 <div className="movie-director">
                     Director: <em>{director}</em>
@@ -41,8 +42,15 @@ export default function FilmCard (props) {
             </div>
         )
     }
-    else if( flag === "detail" && movie)
+
+    if (!movie) {
+        return <div>Film bilgisi yükleniyor...</div>;
+    }
+
+    if( flag === "detail")
     {
+        const {hSave} = props.props;
+
         return (
         <div className="save-wrapper">
             <div className="movie-card">
@@ -60,7 +68,7 @@ export default function FilmCard (props) {
                     </div>
                 ))}
             </div>
-            <div className="save-button">Kaydet</div>
+            <div className="save-button" onClick={() => hSave(id)}>Kaydet</div>
         </div>
 
 

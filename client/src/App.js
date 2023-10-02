@@ -6,10 +6,21 @@ import KaydedilenlerListesi from './Filmler/KaydedilenlerListesi';
 import {BrowserRouter as Router} from "react-router-dom"
 import {Route} from "react-router-dom"
 import FilmCard from './Filmler/FilmCard';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
 
 export default function App () {
     const [saved, setSaved] = useState([]); // Stretch: the ids of "saved" movies
     const [movieList, setMovieList] = useState([]);
+
+    function hSave(id) {
+
+        if(!saved.find((movie) => (String(movie.id) === String(id))))
+        {
+            console.log("hSave", movieList.find((movie) => (String(movie.id) === String(id))));
+            setSaved([...saved, movieList.find((movie) => (String(movie.id) === String(id)))]);
+        }
+    }
 
   useEffect(() => {
     const FilmleriAl = () => {
@@ -34,6 +45,7 @@ export default function App () {
     return (
         <div>
             <Router>
+                <KaydedilenlerListesi list={saved} />
                 <Route exact path="/">
                     <div className="movie-list">
                         {
@@ -46,14 +58,11 @@ export default function App () {
                                 return <FilmCard key={movie.id} props={props}/>
                             })
                         }
-                        {/* <FilmListesi movies={movieList}/> */}
                     </div>
                 </Route>
                 <Route exact path="/filmler/:id">
-                    <FilmCard props={{flag:"detail"}}/>
+                    <FilmCard props={{flag:"detail", hSave:hSave}}/>
                 </Route>
-                    <KaydedilenlerListesi list={[ /* Burası esnek */]} />
-                {/* <div>Bu Div'i kendi Routelarınızla değiştirin</div> */}
             </Router>
         </div>
     );
